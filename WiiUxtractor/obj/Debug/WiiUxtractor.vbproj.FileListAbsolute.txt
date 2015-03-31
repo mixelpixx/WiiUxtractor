@@ -1,0 +1,10 @@
+C:\Users\empulse\Desktop\HexToBinFile\WiiUxtractor\WiiUxtractor\bin\Debug\WiiUxtractor.exe.config
+C:\Users\empulse\Desktop\HexToBinFile\WiiUxtractor\WiiUxtractor\bin\Debug\WiiUxtractor.exe
+C:\Users\empulse\Desktop\HexToBinFile\WiiUxtractor\WiiUxtractor\bin\Debug\WiiUxtractor.pdb
+C:\Users\empulse\Desktop\HexToBinFile\WiiUxtractor\WiiUxtractor\bin\Debug\WiiUxtractor.xml
+C:\Users\empulse\Desktop\HexToBinFile\WiiUxtractor\WiiUxtractor\obj\Debug\WiiUxtractor.Form1.resources
+C:\Users\empulse\Desktop\HexToBinFile\WiiUxtractor\WiiUxtractor\obj\Debug\WiiUxtractor.Resources.resources
+C:\Users\empulse\Desktop\HexToBinFile\WiiUxtractor\WiiUxtractor\obj\Debug\WiiUxtractor.vbproj.GenerateResource.Cache
+C:\Users\empulse\Desktop\HexToBinFile\WiiUxtractor\WiiUxtractor\obj\Debug\WiiUxtractor.exe
+C:\Users\empulse\Desktop\HexToBinFile\WiiUxtractor\WiiUxtractor\obj\Debug\WiiUxtractor.xml
+C:\Users\empulse\Desktop\HexToBinFile\WiiUxtractor\WiiUxtractor\obj\Debug\WiiUxtractor.pdb
