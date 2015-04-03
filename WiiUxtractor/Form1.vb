@@ -14,16 +14,67 @@ Imports System.IO
 '1D54101A3B053C38AF59067EB4000001
 '****************************************************************************************************
 '****************************************************************************************************
+
+
+
+
+
+
+
+
 Public Class Form1
 
     Private Results As String
     Private Delegate Sub delUpdate()
     Private Finished As New delUpdate(AddressOf UpdateText)
     Dim bArr() As Byte
+    Dim GameList() As String
+
 
     Private Sub UpdateText()
         txtResults.Text = Results
     End Sub
+
+    Public Function AES_Decrypt(ByVal input As String, ByVal pass As String) As String
+        Dim AES As New System.Security.Cryptography.RijndaelManaged
+        Dim Hash_AES As New System.Security.Cryptography.MD5CryptoServiceProvider
+        Dim decrypted As String = ""
+        Try
+            Dim hash(31) As Byte
+            Dim temp As Byte() = Hash_AES.ComputeHash(System.Text.ASCIIEncoding.ASCII.GetBytes(pass))
+            Array.Copy(temp, 0, hash, 0, 16)
+            Array.Copy(temp, 0, hash, 15, 16)
+            AES.Key = hash
+            AES.Mode = Security.Cryptography.CipherMode.ECB
+            Dim DESDecrypter As System.Security.Cryptography.ICryptoTransform = AES.CreateDecryptor
+            Dim Buffer As Byte() = Convert.FromBase64String(input)
+            decrypted = System.Text.ASCIIEncoding.ASCII.GetString(DESDecrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
+            Return decrypted
+        Catch ex As Exception
+            Return input
+        End Try
+    End Function
+
+    Private Sub WiiUxtractor_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Loading and decrypt the txt file if necesary
+        If Not File.Exists(Application.StartupPath & "\klist.txt") Then Exit Sub
+        Dim Klist As String = My.Computer.FileSystem.ReadAllText(Application.StartupPath & "\klist.txt")
+        Klist = AES_Decrypt(Klist, "49276D205468652052656465656D6572")
+        'Clearing your combobox
+        GameTitleBox.Items.Clear()
+        'Cleaning the txt file (just in case...)
+        Klist = Klist.Replace(vbCrLf, vbCr)
+        Klist = Klist.Replace(vbLf, vbCr)
+        'Adding Each line into a array of string
+        GameList = Klist.Split(vbCr)
+        'Sorting by alphabetical
+        Array.Sort(GameList)
+        'Adding each game name directly into your combobox
+        For Each Game As String In GameList
+            GameTitleBox.Items.Add(Mid(Game, 1, Len(Game) - 33))
+        Next
+    End Sub
+
 
     Public Function Hex2ByteArr(ByVal sHex As String) As Byte()
         Dim n As Long
@@ -61,6 +112,18 @@ Public Class Form1
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
+        If System.IO.File.Exists("Ckey") = True Then
+            System.IO.File.Delete("Ckey")
+            MsgBox("Deleting old Ckey")
+
+        End If
+
+        Dim bArr() As Byte
+        bArr = Hex2ByteArr("FB604A6A712379304C6FEC32C81567AA")
+        Using writer As BinaryWriter = New BinaryWriter(File.Open("Ckey", FileMode.Create))
+            writer.Write(bArr)
+        End Using
+
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
@@ -86,9 +149,10 @@ Public Class Form1
 
     End Sub
 
-    
+
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+
 
     End Sub
 End Class
