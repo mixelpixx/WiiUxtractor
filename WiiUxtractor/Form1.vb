@@ -1,5 +1,8 @@
 ﻿Imports System.Globalization
 Imports System.IO
+Imports System
+Imports System.Diagnostics
+Imports System.ComponentModel
 
 '****************************************************************************************************
 '****************************************************************************************************
@@ -17,11 +20,6 @@ Imports System.IO
 
 
 
-
-
-
-
-
 Public Class Form1
 
     Private Results As String
@@ -30,6 +28,28 @@ Public Class Form1
     Dim bArr() As Byte
     Dim GameList() As String
 
+
+    Private Sub CMDAutomate()
+
+        Dim myprocess As New Process
+        Dim StartInfo As New System.Diagnostics.ProcessStartInfo
+        StartInfo.FileName = "cmd" 'starts cmd window
+        StartInfo.RedirectStandardInput = True
+        StartInfo.RedirectStandardOutput = True
+        StartInfo.UseShellExecute = False 'required to redirect
+        StartInfo.CreateNoWindow = True 'creates no cmd window
+        myprocess.StartInfo = StartInfo
+        myprocess.Start()
+        Dim SR As System.IO.StreamReader = myprocess.StandardOutput
+        Dim SW As System.IO.StreamWriter = myprocess.StandardInput
+        SW.WriteLine("DiscU2.1b.exe diskkey.bin game.wud ckey") 'Launch Discu 2.1b
+        SW.WriteLine("exit") 'exits command prompt window
+        Results = SR.ReadToEnd 'returns results of the command window
+        SW.Close()
+        SR.Close()
+        'invokes Finished delegate, which updates textbox with the results text
+        Invoke(Finished)
+    End Sub
 
     Private Sub UpdateText()
         txtResults.Text = Results
@@ -153,6 +173,8 @@ Public Class Form1
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
 
+        Dim CMDThread As New Threading.Thread(AddressOf CMDAutomate)
+        CMDThread.Start()
 
     End Sub
 End Class
