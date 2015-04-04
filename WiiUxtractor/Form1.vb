@@ -18,19 +18,14 @@ Imports System.ComponentModel
 '****************************************************************************************************
 '****************************************************************************************************
 
-
-
 Public Class Form1
-
     Private Results As String
     Private Delegate Sub delUpdate()
     Private Finished As New delUpdate(AddressOf UpdateText)
     Dim bArr() As Byte
     Dim GameList() As String
 
-
     Private Sub CMDAutomate()
-
         Dim myprocess As New Process
         Dim StartInfo As New System.Diagnostics.ProcessStartInfo
         StartInfo.FileName = "cmd" 'starts cmd window
@@ -94,7 +89,6 @@ Public Class Form1
             GameTitleBox.Items.Add(Mid(Game, 1, Len(Game) - 33))
         Next
     End Sub
-
 
     Public Function Hex2ByteArr(ByVal sHex As String) As Byte()
         Dim n As Long
@@ -165,11 +159,7 @@ Public Class Form1
         Using writer As BinaryWriter = New BinaryWriter(File.Open("Diskkey.bin", FileMode.Create))
             writer.Write(bArr)
         End Using
-
-
     End Sub
-
-
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
 

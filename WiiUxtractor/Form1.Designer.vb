@@ -33,8 +33,8 @@ Partial Class Form1
         Me.AdvancedToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.GameTitleBox = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.GameTitleBox = New System.Windows.Forms.ComboBox()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -130,24 +130,23 @@ Partial Class Form1
         Me.PictureBox1.TabIndex = 7
         Me.PictureBox1.TabStop = False
         '
-        'GameTitleBox
-        '
-        Me.GameTitleBox.BackColor = System.Drawing.Color.Black
-        Me.GameTitleBox.ForeColor = System.Drawing.Color.White
-        Me.GameTitleBox.FormattingEnabled = True
-        Me.GameTitleBox.Location = New System.Drawing.Point(470, 173)
-        Me.GameTitleBox.Name = "GameTitleBox"
-        Me.GameTitleBox.Size = New System.Drawing.Size(593, 21)
-        Me.GameTitleBox.TabIndex = 8
-        '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(471, 158)
+        Me.Label1.Location = New System.Drawing.Point(451, 125)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(94, 13)
         Me.Label1.TabIndex = 9
         Me.Label1.Text = "Select Game Title:"
+        '
+        'GameTitleBox
+        '
+        Me.GameTitleBox.FormattingEnabled = True
+        Me.GameTitleBox.Items.AddRange(New Object() {"0001: The Avengers - Battle for Earth(pal)", "0002: Super Mario 3D World usa", "0003: The Legend of Zelda the Windwaker HD usa", "0004: Nintendo Land usa", "0005: Sonic Lost World usa", "0006: Pikmin 3 usa", "0007: Game and Wario usa", "0008: New Super Mario Bros U usa", "0009: Mario Kart 8 usa", "0010: Duck Tales Remastered usa", "0011: ESPN Sport Connection usa", "0012: Tank Tank Tank usa", "0013: Donkey Kong Country Tropical Freeze usa", "0014: Mario and Sonic at the Sochi 2014 Olympic Winter Games usa", "0015: Call Of Duty Ghosts usa", "0016: New Super Luigi U usa", "0017: Pac Man and The Ghostly Adventures usa", "0019: The Croods Prehistoric Party usa", "0020: The Smurfs 2 usa", "0021: Angry Birds Star Wars usa", "0022: Family Party 30 Great Games Obstacle Arcade usa", "0023: FIFA 13 usa", "0024: Zombiu usa", "0025: Scribblenauts Unlimited usa", "0026: Turbo Super Stunt Squad usa", "0027: Phineas and Ferb Quest for Cool Stuff usa", "0028: Sonic and All Stars Racing Transformed usa", "0029: Scribblenauts Unmasked A DC Comics Adventure usa", "0030: Lego Marvel Super Heroes usa", "0031: Hello Kitty Kruisers usa", "0032: Adventure Time Explore The Dungeon Because I Dont Know usa", "0033: Monster Hunter 3 Ultimate usa", "0034: Sports Club U usa", "0035: Hot Wheels Worlds Best Driver usa", "0036: Sniper Elite V2 usa", "0037: Spongebob Squarepants Planktons Robotic Revenge usa", "0038: Wipeout 3 usa"})
+        Me.GameTitleBox.Location = New System.Drawing.Point(470, 163)
+        Me.GameTitleBox.Name = "GameTitleBox"
+        Me.GameTitleBox.Size = New System.Drawing.Size(593, 21)
+        Me.GameTitleBox.TabIndex = 10
         '
         'Form1
         '
@@ -156,8 +155,8 @@ Partial Class Form1
         Me.BackColor = System.Drawing.Color.Black
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.ClientSize = New System.Drawing.Size(1280, 611)
-        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.GameTitleBox)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.TextBox2)
         Me.Controls.Add(Me.Button1)
@@ -186,7 +185,7 @@ Partial Class Form1
     Friend WithEvents AdvancedToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents AboutToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents GameTitleBox As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents GameTitleBox As System.Windows.Forms.ComboBox
 
 End Class
