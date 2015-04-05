@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WiiUxtractor.exe" size="931328">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WiiUxtractor.exe" size="931840">
       <assemblyIdentity name="WiiUxtractor" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>0DgossbPODqxqQrkTFuqy2lwpDkiX1VLepBatO/nBm0=</dsig:DigestValue>
+        <dsig:DigestValue>8qphpsoby2TS3b9QrhJe++l43uEy2VTVOtJZFZ02kaE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

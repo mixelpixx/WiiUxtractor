@@ -184,4 +184,11 @@ Public Class Form1
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
         Me.Close()
     End Sub
+
+    Private Sub CreditToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CreditToolStripMenuItem.Click
+
+
+        MessageBox.Show("Credit: DiscU --> Crediar    GUI/MOD --> The Redeemer & Mixelpixx")
+
+    End Sub
 End Class

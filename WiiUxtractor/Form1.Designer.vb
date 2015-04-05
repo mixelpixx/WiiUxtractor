@@ -24,8 +24,10 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AdvancedToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CreditToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.txtResults = New System.Windows.Forms.TextBox()
         Me.Button2 = New System.Windows.Forms.Button()
@@ -36,8 +38,6 @@ Partial Class Form1
         Me.GameTitleBox = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.cmdBox = New System.Windows.Forms.TextBox()
-        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.CreditToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -48,6 +48,12 @@ Partial Class Form1
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "File"
+        '
+        'ExitToolStripMenuItem
+        '
+        Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(92, 22)
+        Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'AdvancedToolStripMenuItem
         '
@@ -61,6 +67,12 @@ Partial Class Form1
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
         Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(52, 20)
         Me.AboutToolStripMenuItem.Text = "About"
+        '
+        'CreditToolStripMenuItem
+        '
+        Me.CreditToolStripMenuItem.Name = "CreditToolStripMenuItem"
+        Me.CreditToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.CreditToolStripMenuItem.Text = "Credit"
         '
         'MenuStrip1
         '
@@ -165,18 +177,6 @@ Partial Class Form1
         Me.cmdBox.Name = "cmdBox"
         Me.cmdBox.Size = New System.Drawing.Size(593, 20)
         Me.cmdBox.TabIndex = 5
-        '
-        'ExitToolStripMenuItem
-        '
-        Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.ExitToolStripMenuItem.Text = "Exit"
-        '
-        'CreditToolStripMenuItem
-        '
-        Me.CreditToolStripMenuItem.Name = "CreditToolStripMenuItem"
-        Me.CreditToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.CreditToolStripMenuItem.Text = "Credit"
         '
         'Form1
         '
