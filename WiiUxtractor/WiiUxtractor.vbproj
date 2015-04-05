@@ -63,7 +63,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Mario_Galaxy_001.ico</ApplicationIcon>
+    <ApplicationIcon>process.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -157,7 +157,6 @@
     <None Include="WiiUxtractor_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Mario_Galaxy_001.ico" />
     <Content Include="process.ico" />
   </ItemGroup>
   <ItemGroup>

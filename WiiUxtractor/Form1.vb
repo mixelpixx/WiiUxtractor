@@ -37,16 +37,29 @@ Public Class Form1
         myprocess.Start()
         Dim SR As System.IO.StreamReader = myprocess.StandardOutput
         Dim SW As System.IO.StreamWriter = myprocess.StandardInput
-        SW.WriteLine("DiscU2.1b.exe diskkey.bin game.wud ckey") 'Launch Discu 2.1b
-        SW.WriteLine("exit") 'exits command prompt window
-        Results = SR.ReadToEnd 'returns results of the command window
-        SW.Close()
-        SR.Close()
-        'invokes Finished delegate, which updates textbox with the results text
-        Invoke(Finished)
+
+        If cmdBox.Text = "" Then
+            SW.WriteLine("DiscU2.1b.exe diskkey.bin game.wud ckey") 'Launch Discu 2.1b
+            SW.WriteLine("exit") 'exits command prompt window
+            Results = SR.ReadToEnd 'returns results of the command window
+            SW.Close()
+            SR.Close()
+            'invokes Finished delegate, which updates textbox with the results text
+            Invoke(Finished)
+
+        Else
+
+            SW.WriteLine(cmdBox.Text) 'Launch dos command from box
+            SW.WriteLine("exit") 'exits command prompt window
+            Results = SR.ReadToEnd 'returns results of the command window
+            SW.Close()
+            SR.Close()
+            'invokes Finished delegate, which updates textbox with the results text
+            Invoke(Finished)
+        End If
     End Sub
 
-    Private Sub UpdateText()
+   Private Sub UpdateText()
         txtResults.Text = Results
     End Sub
 
@@ -166,5 +179,9 @@ Public Class Form1
         Dim CMDThread As New Threading.Thread(AddressOf CMDAutomate)
         CMDThread.Start()
 
+    End Sub
+
+    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
+        Me.Close()
     End Sub
 End Class
