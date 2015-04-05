@@ -71,7 +71,7 @@ Partial Class Form1
         'CreditToolStripMenuItem
         '
         Me.CreditToolStripMenuItem.Name = "CreditToolStripMenuItem"
-        Me.CreditToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.CreditToolStripMenuItem.Size = New System.Drawing.Size(106, 22)
         Me.CreditToolStripMenuItem.Text = "Credit"
         '
         'MenuStrip1
@@ -158,6 +158,7 @@ Partial Class Form1
         Me.GameTitleBox.Name = "GameTitleBox"
         Me.GameTitleBox.Size = New System.Drawing.Size(593, 21)
         Me.GameTitleBox.TabIndex = 10
+        Me.GameTitleBox.Text = "Please select a Game Title.."
         '
         'Label2
         '
