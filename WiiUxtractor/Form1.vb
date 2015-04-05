@@ -118,25 +118,6 @@ Public Class Form1
         Next
         Hex2ByteArr = bArr
     End Function
-
-    Private Sub DiscU_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Clearing your combobox
-        GameTitleBox.Items.Clear()
-        'Loading the txt file
-        Dim Klist As String = My.Computer.FileSystem.ReadAllText(Application.StartupPath & "\klist.txt")
-        'Cleaning the txt file (just in case...)
-        Klist = Klist.Replace(vbCrLf, vbCr)
-        Klist = Klist.Replace(vbLf, vbCr)
-        'Adding Each line into a array of string
-        GameList = Klist.Split(vbCr)
-        'Sorting by alphabetical
-        Array.Sort(GameList)
-        'Adding each game name directly into your combobox
-        For Each Game As String In GameList
-            GameTitleBox.Items.Add(Mid(Game, 1, Len(Game) - 32))
-        Next
-    End Sub
-
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
         If System.IO.File.Exists("Ckey") = True Then
