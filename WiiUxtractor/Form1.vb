@@ -1,4 +1,4 @@
-ï»¿Imports System.Globalization
+Ã¯Â»Â¿Imports System.Globalization
 Imports System.IO
 Imports System
 Imports System.Diagnostics
@@ -123,57 +123,64 @@ Public Class Form1
             .ToArray()
     End Function
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Try
+            Const ckeyPath As String = "Ckey"
+            If File.Exists(ckeyPath) Then
+                File.Delete(ckeyPath)
+                MessageBox.Show("Deleting old Ckey", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
 
-        If System.IO.File.Exists("Ckey") = True Then
-            System.IO.File.Delete("Ckey")
-            MsgBox("Deleting old Ckey")
-
-        End If
-
-        Dim bArr() As Byte
-        bArr = Hex2ByteArr("FB604A6A712379304C6FEC32C81567AA")
-        Using writer As BinaryWriter = New BinaryWriter(File.Open("Ckey", FileMode.Create))
-            writer.Write(bArr)
-        End Using
-
+            Dim bArr As Byte() = Hex2ByteArr(WiiUCommonKey)
+            File.WriteAllBytes(ckeyPath, bArr)
+            MessageBox.Show("Ckey generated successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As Exception
+            _logger.Error(ex, "Error in Button1_Click")
+            MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Try
+            Const diskKeyPath As String = "Diskkey.bin"
+            If File.Exists(diskKeyPath) Then
+                File.Delete(diskKeyPath)
+            End If
 
+            If GameTitleBox.SelectedIndex = -1 Then
+                MessageBox.Show("Please select a game title to generate a key for.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
 
-        If System.IO.File.Exists("Diskkey.bin") = True Then System.IO.File.Delete("Diskkey.bin")
+            Dim hash As String = _gameList(GameTitleBox.SelectedIndex)
+            Dim bArr As Byte() = Hex2ByteArr(hash.Substring(hash.Length - 32))
 
-        Dim bArr() As Byte
-
-        If GameTitleBox.SelectedIndex = -1 Then
-            MessageBox.Show("Please Select a Game Title to Generate a Key for..")
-            Exit Sub
-        End If
-
-        'This part of code will inject only the last 32 characters of a line, the Hash part ;)
-        Dim Hash As String = GameList(GameTitleBox.SelectedIndex)
-        bArr = Hex2ByteArr(Mid(Hash, Len(Hash) - 31, 32))
-
-        Using writer As BinaryWriter = New BinaryWriter(File.Open("Diskkey.bin", FileMode.Create))
-            writer.Write(bArr)
-        End Using
+            File.WriteAllBytes(diskKeyPath, bArr)
+            MessageBox.Show("Disk key generated successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As Exception
+            _logger.Error(ex, "Error in Button2_Click")
+            MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-
-        Dim CMDThread As New Threading.Thread(AddressOf CMDAutomate)
-        CMDThread.Start()
-
+    Private Async Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Try
+            Await Task.Run(AddressOf CMDAutomate)
+        Catch ex As Exception
+            _logger.Error(ex, "Error in Button3_Click")
+            MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
-        Me.Close()
+        Application.Exit()
     End Sub
 
     Private Sub CreditToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CreditToolStripMenuItem.Click
+        MessageBox.Show("Credit: DiscU --> Crediar    GUI/MOD --> The Redeemer & Mixelpixx", "Credits", MessageBoxButtons.OK, MessageBoxIcon.Information)
+    End Sub
 
-
-        MessageBox.Show("Credit: DiscU --> Crediar    GUI/MOD --> The Redeemer & Mixelpixx")
-
+    Private Sub AdvancedToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedToolStripMenuItem.Click
+        ' TODO: Implement advanced options
+        MessageBox.Show("Advanced options not implemented yet.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 End Class
