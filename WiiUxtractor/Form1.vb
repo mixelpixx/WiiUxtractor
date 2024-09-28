@@ -1,4 +1,4 @@
-﻿Imports System.Globalization
+ï»¿Imports System.Globalization
 Imports System.IO
 Imports System
 Imports System.Diagnostics
@@ -25,98 +25,102 @@ Public Class Form1
     Dim bArr() As Byte
     Dim GameList() As String
 
-    Private Sub CMDAutomate()
-        Dim myprocess As New Process
-        Dim StartInfo As New System.Diagnostics.ProcessStartInfo
-        StartInfo.FileName = "cmd" 'starts cmd window
-        StartInfo.RedirectStandardInput = True
-        StartInfo.RedirectStandardOutput = True
-        StartInfo.UseShellExecute = False 'required to redirect
-        StartInfo.CreateNoWindow = True 'creates no cmd window
-        myprocess.StartInfo = StartInfo
-        myprocess.Start()
-        Dim SR As System.IO.StreamReader = myprocess.StandardOutput
-        Dim SW As System.IO.StreamWriter = myprocess.StandardInput
+    Private Async Sub CMDAutomate()
+        Try
+            Using process As New Process()
+                process.StartInfo = New ProcessStartInfo With {
+                    .FileName = "cmd",
+                    .RedirectStandardInput = True,
+                    .RedirectStandardOutput = True,
+                    .UseShellExecute = False,
+                    .CreateNoWindow = True
+                }
 
-        If cmdBox.Text = "" Then
-            SW.WriteLine("DiscU2.1b.exe diskkey.bin game.wud ckey") 'Launch Discu 2.1b
-            SW.WriteLine("exit") 'exits command prompt window
-            Results = SR.ReadToEnd 'returns results of the command window
-            SW.Close()
-            SR.Close()
-            'invokes Finished delegate, which updates textbox with the results text
-            Invoke(Finished)
+                process.Start()
 
-        Else
+                Using writer As StreamWriter = process.StandardInput
+                    If String.IsNullOrEmpty(cmdBox.Text) Then
+                        Await writer.WriteLineAsync("DiscU2.1b.exe diskkey.bin game.wud ckey")
+                    Else
+                        Await writer.WriteLineAsync(cmdBox.Text)
+                    End If
+                    Await writer.WriteLineAsync("exit")
+                End Using
 
-            SW.WriteLine(cmdBox.Text) 'Launch dos command from box
-            SW.WriteLine("exit") 'exits command prompt window
-            Results = SR.ReadToEnd 'returns results of the command window
-            SW.Close()
-            SR.Close()
-            'invokes Finished delegate, which updates textbox with the results text
-            Invoke(Finished)
-        End If
+                Results = Await process.StandardOutput.ReadToEndAsync()
+            End Using
+
+            Invoke(_finished)
+        Catch ex As Exception
+            _logger.Error(ex, "Error in CMDAutomate")
+            MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
    Private Sub UpdateText()
         txtResults.Text = Results
     End Sub
 
-    Public Function AES_Decrypt(ByVal input As String, ByVal pass As String) As String
-        Dim AES As New System.Security.Cryptography.RijndaelManaged
-        Dim Hash_AES As New System.Security.Cryptography.MD5CryptoServiceProvider
-        Dim decrypted As String = ""
+    Public Function AES_Decrypt(input As String, pass As String) As String
         Try
-            Dim hash(31) As Byte
-            Dim temp As Byte() = Hash_AES.ComputeHash(System.Text.ASCIIEncoding.ASCII.GetBytes(pass))
-            Array.Copy(temp, 0, hash, 0, 16)
-            Array.Copy(temp, 0, hash, 15, 16)
-            AES.Key = hash
-            AES.Mode = Security.Cryptography.CipherMode.ECB
-            Dim DESDecrypter As System.Security.Cryptography.ICryptoTransform = AES.CreateDecryptor
-            Dim Buffer As Byte() = Convert.FromBase64String(input)
-            decrypted = System.Text.ASCIIEncoding.ASCII.GetString(DESDecrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
-            Return decrypted
+            Using aes As New AesManaged()
+                aes.Mode = CipherMode.ECB
+                aes.Padding = PaddingMode.PKCS7
+
+                ' Use a more secure key derivation function
+                Using deriveBytes As New Rfc2898DeriveBytes(pass, New Byte() {0, 0, 0, 0, 0, 0, 0, 0}, 10000)
+                    aes.Key = deriveBytes.GetBytes(32) ' AES-256
+                End Using
+
+                Using decryptor As ICryptoTransform = aes.CreateDecryptor()
+                    Dim buffer As Byte() = Convert.FromBase64String(input)
+                    Using memoryStream As New MemoryStream(buffer)
+                        Using cryptoStream As New CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read)
+                            Using reader As New StreamReader(cryptoStream)
+                                Return reader.ReadToEnd()
+                            End Using
+                        End Using
+                    End Using
+                End Using
+            End Using
         Catch ex As Exception
+            _logger.Error(ex, "Error in AES_Decrypt")
             Return input
         End Try
     End Function
 
     Private Sub WiiUxtractor_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Loading and decrypt the txt file if necesary
-        If Not File.Exists(Application.StartupPath & "\klist.txt") Then Exit Sub
-        Dim Klist As String = My.Computer.FileSystem.ReadAllText(Application.StartupPath & "\klist.txt")
-        Klist = AES_Decrypt(Klist, "49276D205468652052656465656D6572")
-        'Clearing your combobox
-        GameTitleBox.Items.Clear()
-        'Cleaning the txt file (just in case...)
-        Klist = Klist.Replace(vbCrLf, vbCr)
-        Klist = Klist.Replace(vbLf, vbCr)
-        'Adding Each line into a array of string
-        GameList = Klist.Split(vbCr)
-        'Sorting by alphabetical
-        Array.Sort(GameList)
-        'Adding each game name directly into your combobox
-        For Each Game As String In GameList
-            GameTitleBox.Items.Add(Mid(Game, 1, Len(Game) - 33))
-        Next
+        Try
+            Dim klistPath As String = Path.Combine(Application.StartupPath, "klist.txt")
+            If Not File.Exists(klistPath) Then
+                MessageBox.Show("klist.txt file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            Dim klist As String = File.ReadAllText(klistPath)
+            klist = AES_Decrypt(klist, "49276D205468652052656465656D6572")
+
+            GameTitleBox.Items.Clear()
+
+            _gameList = klist.Replace(vbCrLf, vbCr).Replace(vbLf, vbCr).Split(vbCr)
+            Array.Sort(_gameList)
+
+            GameTitleBox.Items.AddRange(_gameList.Select(Function(game) game.Substring(0, game.Length - 33)).ToArray())
+        Catch ex As Exception
+            _logger.Error(ex, "Error in WiiUxtractor_Load")
+            MessageBox.Show($"An error occurred while loading game list: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
-    Public Function Hex2ByteArr(ByVal sHex As String) As Byte()
-        Dim n As Long
-        Dim nCount As Long
-        Dim bArr() As Byte
-        nCount = Len(sHex)
-        If (nCount And 1) = 1 Then
-            sHex = "0" & sHex
-            nCount = nCount + 1
+    Public Function Hex2ByteArr(sHex As String) As Byte()
+        If String.IsNullOrEmpty(sHex) Then
+            Return Array.Empty(Of Byte)()
         End If
-        ReDim bArr(nCount \ 2 - 1)
-        For n = 1 To nCount Step 2
-            bArr((n - 1) \ 2) = CByte("&H" & Mid$(sHex, n, 2))
-        Next
-        Hex2ByteArr = bArr
+
+        sHex = If(sHex.Length Mod 2 = 1, "0" & sHex, sHex)
+        Return Enumerable.Range(0, sHex.Length \ 2)
+            .Select(Function(x) Convert.ToByte(sHex.Substring(x * 2, 2), 16))
+            .ToArray()
     End Function
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
